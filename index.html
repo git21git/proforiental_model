@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Анализ факторов выбора профессии школьниками</title>
+<style>
+:root{--ink:#172b3b;--muted:#42576b;--line:#c8d6df;--accent:#126a66;--wash:#f2f8f7}
+*{box-sizing:border-box}body{margin:0;color:var(--ink);font:17px/1.6 "Segoe UI",Arial,sans-serif}a{color:#105e5a}a:focus-visible,select:focus-visible{outline:3px solid #a85612;outline-offset:4px}
+header,main,footer{max-width:1160px;margin:auto;padding:0 28px}header{padding-top:58px;padding-bottom:30px;border-bottom:1px solid var(--line)}h1{font:700 clamp(2.1rem,5vw,3.6rem)/1.08 Georgia,serif;max-width:850px;margin:12px 0 18px}h2{font:700 1.95rem/1.18 Georgia,serif;margin:0 0 18px}h3{margin:20px 0 5px}p{max-width:78ch}.byline,figcaption{color:var(--muted)}main{display:grid;grid-template-columns:210px minmax(0,1fr);gap:40px;padding-top:38px}nav{align-self:start;position:sticky;top:24px}nav ul{padding:0;list-style:none}nav li{margin:8px 0}section{padding-bottom:34px;margin-bottom:32px;border-bottom:1px solid var(--line);scroll-margin-top:24px}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0}.metrics div,figure,.demo{background:var(--wash);border:1px solid var(--line);border-radius:10px;padding:14px 18px}.metrics strong{display:block;font-size:1.65rem;color:var(--accent)}figure{margin:18px 0}figcaption{margin-top:12px;font-size:.92rem}.bar{display:grid;grid-template-columns:minmax(140px,2fr) minmax(75px,4fr) 3.3rem;gap:12px;align-items:center;margin:9px 0}.track{border-radius:4px;background:#dce8e8;height:13px}.fill{display:block;border-radius:4px;background:var(--accent);height:100%;width:var(--w)}.scroller{overflow:auto}table{width:100%;border-collapse:collapse;margin:15px 0}th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}thead{background:var(--wash)}details{margin:14px 0}summary{cursor:pointer;font-weight:600}select{max-width:100%;font:inherit;color:inherit;padding:7px}footer{padding-bottom:30px}.small{font-size:.93rem}
+@media(max-width:760px){header{padding-top:30px}main{display:block}nav{position:static;margin-bottom:28px}.metrics{grid-template-columns:1fr}.bar{gap:7px;grid-template-columns:130px 1fr 3rem}.small{font-size:.9rem}}
+</style>
+</head>
+<body>
+<header>
+<p class="byline">Чудинова Мария · РТУ МИРЭА · 2026</p>
+<h1>Анализ факторов выбора профессии школьниками</h1>
+<p>Курсовая работа по дисциплине «Технологии и инструментарий машинного обучения». От анкетирования до прототипа пакетной обработки и отчёта Power BI.</p>
+</header>
+<main>
+<nav aria-label="Содержание"><strong>Содержание</strong><ul>
+<li><a href="#data">Данные</a></li><li><a href="#eda">Разведочный анализ</a></li><li><a href="#model">Модель и оценка</a></li><li><a href="#system">Жизненный цикл</a></li><li><a href="#powerbi">Отчёт Power BI</a></li><li><a href="#application">Применение</a></li>
+</ul></nav>
+<article>
+<section id="data"><h2>Данные и постановка задачи</h2>
+<p>В проекте «Абитуриент — студент: твой маршрут» требовалось понять, как предметные интересы, успеваемость и занятия связаны с профессиональным предпочтением школьника. Интернет-опрос проводился с 1 октября по 14 ноября 2026 года среди школьников ХМАО — Югры.</p>
+<div class="metrics"><div><strong>125</strong>исходных анкет</div><div><strong>104</strong>после отбора</div><div><strong>12</strong>населённых пунктов</div></div>
+<p>Отбор учитывал территорию, класс обучения (7–11) и наличие одного из трёх целевых ответов. Метка модели отражает заявленное предпочтение в момент опроса. Выборка добровольная, в ней больше ответов из 10–11 классов.</p>
+</section>
+<section id="eda"><h2>Разведочный анализ</h2>
+<figure aria-label="Число анкет по заявленному профессиональному направлению">
+<div class="bar"><span>Техническое</span><span class="track"><i class="fill" style="--w:92.5%"></i></span><strong>37</strong></div>
+<div class="bar"><span>Гуманитарное</span><span class="track"><i class="fill" style="--w:92.5%"></i></span><strong>37</strong></div>
+<div class="bar"><span>Естественно-научное</span><span class="track"><i class="fill" style="--w:75%"></i></span><strong>30</strong></div>
+<figcaption>Распределение 104 анкет по заявленному направлению</figcaption>
+</figure>
+<p>В группе с техническим предпочтением средняя оценка по своему блоку выше среднего двух остальных на 0,38 балла. Для гуманитарной и естественно-научной групп разница составила 0,24 и 0,07. Связи с любимыми предметами и занятиями оценены по таблицам частот. Во всех трёх разведочных проверках применялись 9 999 перестановок и поправка Холма. Скорректированное p составило 0,0003 в каждой проверке. Результаты описывают ассоциации в опросе.</p>
+</section>
+<section id="model"><h2>Модель и оценка качества</h2>
+<p>Модель использует три средние оценки, три флага любимого предмета и три флага внеучебных занятий. На 49 анкетах выполнена стратифицированная кросс-валидация по группам, чтобы совпадающие ответы оставались в одном блоке. Медианы и параметры стандартизации рассчитаны по обучающим записям.</p>
+<div class="scroller"><table><thead><tr><th scope="col">Алгоритм</th><th scope="col">Macro-F1 на кросс-валидации</th></tr></thead><tbody>
+<tr><td>Частый класс</td><td>0,156</td></tr><tr><td>Логистическая регрессия L2, C = 1</td><td>0,557</td></tr><tr><td>Дерево глубины 5</td><td>0,655</td></tr><tr><td>Случайный лес</td><td>0,633</td></tr>
+</tbody></table></div>
+<p>Для прототипа выбрана логистическая регрессия. Для каждого профиля она даёт линейный балл, который можно разложить на вклады исходных признаков. На 13 анкетах, отложенных до выбора модели, получено 9 совпадений, accuracy 0,692 и macro-F1 0,645. Базовое правило на тех же анкетах дало macro-F1 0,185.</p>
+<details><summary>Матрица ошибок на отложенной части</summary><div class="scroller"><table><caption>Строки — заявленный профиль, столбцы — прогноз</caption><thead><tr><th scope="col">Направление</th><th scope="col">Тех.</th><th scope="col">Гум.</th><th scope="col">Ест.</th></tr></thead><tbody>
+<tr><th scope="row">Техническое</th><td>5</td><td>0</td><td>0</td></tr><tr><th scope="row">Гуманитарное</th><td>2</td><td>3</td><td>0</td></tr><tr><th scope="row">Естественно-научное</th><td>1</td><td>1</td><td>1</td></tr></tbody></table></div></details>
+<p>Полнота естественно-научного класса — 0,333. По групповой бутстреп-оценке 95%-й интервал macro-F1 составил 0,333–0,878. Для оценки пригодности во втором сезоне требуется проверка на новых наблюдениях.</p>
+</section>
+<section id="system"><h2>Жизненный цикл и реализация</h2>
+<ol><li>Собрать и проверить выгрузку Яндекс Формы.</li><li>Согласовать словарь полей и требования.</li><li>Сформировать признаки и сравнить алгоритмы в Python.</li><li>Проверить фиксированную модель, метрики по классам и пример расчёта.</li><li>Записать результаты в SQLite и обновить CSV для Power BI Desktop.</li></ol>
+<p>Итерационно-инкрементный подход позволяет вернуться к формулировкам анкеты, составу признаков или правилам обновления после проверки. Действующая модель сохраняется, пока новая версия не покажет улучшение на общей проверочной порции.</p>
+<figure aria-label="Накопительное число анкет по этапам" id="batch">
+<div class="bar"><span>Исходный этап</span><span class="track"><i class="fill" style="--w:59.6%"></i></span><strong>62</strong></div><div class="bar"><span>Порция 1</span><span class="track"><i class="fill" style="--w:70.2%"></i></span><strong>73</strong></div><div class="bar"><span>Порция 2</span><span class="track"><i class="fill" style="--w:80.8%"></i></span><strong>84</strong></div><div class="bar"><span>Порция 3</span><span class="track"><i class="fill" style="--w:90.4%"></i></span><strong>94</strong></div><div class="bar"><span>Порция 4</span><span class="track"><i class="fill" style="--w:100%"></i></span><strong>104</strong></div>
+<figcaption>Пакетное обновление. Порядок порций задан для эксперимента.</figcaption></figure>
+<p>Повтор последней порции сохранил объём и содержимое выгрузок. Файл с оценкой 6 отклонён при проверке. На последней порции действующая модель получила macro-F1 0,802, а повторно обученная версия — 0,586. В прототипе сохранена действующая версия.</p>
+</section>
+<section id="powerbi"><h2>Отчёт Power BI</h2>
+<p>В отчёте три страницы. «Выборка» показывает состав и фильтры, «Факторы» сопоставляет успеваемость, интересы и занятия по профилям, «Результаты модели» выводит три балла, предложенное направление и историю этапов.</p>
+<p><a href="power-bi-demo.zip" download>Скачать демонстрацию Power BI</a>. Распакуйте архив, откройте Guidance.pbip в Power BI Desktop и нажмите «Обновить». Источники демонстрационных записей встроены в проект.</p>
+<div class="demo"><label for="example"><strong>Посмотреть пример отображения баллов</strong></label><br>
+<select id="example"><option value="0">Демо 1 · технические интересы</option><option value="1">Демо 2 · гуманитарные интересы</option><option value="2">Демо 3 · естественно-научные интересы</option></select>
+<p id="result" aria-live="polite">Техническое 1,12 · гуманитарное −0,48 · естественно-научное −0,64. Предложение: техническое.</p>
+<p class="small">Вымышленные примеры иллюстрируют логику интерфейса.</p></div>
+</section>
+<section id="application"><h2>Применение результатов</h2>
+<p>Во втором сезоне проекта «Абитуриент — студент: твой маршрут» результаты будут использованы для подготовки тем встреч, подбора профессиональных проб и обсуждения образовательных маршрутов со студентами-наставниками. Пользу консультаций предстоит оценить по обратной связи участников.</p>
+<p>Материалы работы представлялись на конференциях «Молодые профессионалы» в ИТМО и «Социальная психология в социальных практиках: проблемы и перспективы исследования» в МПГУ. Научный руководитель — к. т. н., доцент Т. Е. Саратова.</p>
+</section>
+</article>
+</main>
+<footer><p class="small">Портфолио проекта · Чудинова Мария</p></footer>
+<script>
+const examples=[
+'Техническое 1,12 · гуманитарное −0,48 · естественно-научное −0,64. Предложение: техническое.',
+'Техническое −0,32 · гуманитарное 0,91 · естественно-научное −0,59. Предложение: гуманитарное.',
+'Техническое −0,52 · гуманитарное −0,21 · естественно-научное 0,73. Предложение: естественно-научное.'
+];
+document.getElementById('example').addEventListener('change',e=>{document.getElementById('result').textContent=examples[Number(e.target.value)];});
+</script>
+</body></html>
